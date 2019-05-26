@@ -7,6 +7,9 @@
  Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
  */
 function forEach(array, fn) {
+    for (var i = 0; i < array.lenght; i++){
+        fn(array[i], i, array);
+    }
 }
 
 /*
@@ -16,6 +19,12 @@ function forEach(array, fn) {
  Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
  */
 function map(array, fn) {
+    var copy_array = [];
+    for (var i = 0; i < array.lenght; i++){
+        copy_array[i] = fn(array[i], i, array);
+    }
+
+    return copy_array;
 }
 
 /*
