@@ -20,13 +20,14 @@ function forEach(array, fn) {
  Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
  */
 function map(array, fn) {
-    var copy_array = [];
+    var copyArray = [];
+
     for (let i = 0; i < array.length; i++) {
-        copy_array[i] = fn(array[i], i, array);
+        copyArray[i] = fn(array[i], i, array);
         
     }
 
-    return copy_array;
+    return copyArray;
 }
 
 /*
@@ -36,6 +37,14 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
+    var x = initial || array[0],
+        i = initial ? 0 : 1;
+
+    for (i; i < array.length; i++) {
+        x = fn(x, array[i], i, array);
+    }
+
+    return x;
 }
 
 /*
