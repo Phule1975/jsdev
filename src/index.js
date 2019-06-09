@@ -8,8 +8,9 @@
  Пример:
    addListener('click', document.querySelector('a'), () => console.log('...')) // должна добавить указанный обработчик кликов на указанный элемент
  */
-function addListener(eventName, target, fn) {
-}
+var addListener = (eventName, target, fn) => {
+	target.addListener(eventName, fn);
+};
 
 /*
  Задание 2:
@@ -19,8 +20,9 @@ function addListener(eventName, target, fn) {
  Пример:
    removeListener('click', document.querySelector('a'), someHandler) // должна удалить указанный обработчик кликов на указанный элемент
  */
-function removeListener(eventName, target, fn) {
-}
+var removeListener = (eventName, target, fn) => {
+	target.removeListener(eventName, fn);
+};
 
 /*
  Задание 3:
@@ -30,8 +32,11 @@ function removeListener(eventName, target, fn) {
  Пример:
    skipDefault('click', document.querySelector('a')) // после вызова функции, клики на указанную ссылку не должны приводить к переходу на другую страницу
  */
-function skipDefault(eventName, target) {
-}
+var skipDefault = (eventName, target) => {
+	target.addListener(eventName, function(event){
+        event.preventDefault();
+    });
+};
 
 /*
  Задание 4:
@@ -41,8 +46,11 @@ function skipDefault(eventName, target) {
  Пример:
    emulateClick(document.querySelector('a')) // для указанного элемента должно быть сэмулировано события click
  */
-function emulateClick(target) {
-}
+var emulateClick = (target) => {
+    var event = new Event('click');
+
+    return target.dispatchEvent(event);
+};
 
 /*
  Задание 5:
@@ -53,8 +61,15 @@ function emulateClick(target) {
  Пример:
    delegate(document.body, () => console.log('кликнули на button')) // добавит такой обработчик кликов для body, который будет вызывать указанную функцию только если кликнули на кнопку (элемент с тегом button)
  */
-function delegate(target, fn) {
-}
+var delegate = (target, fn) => {
+    target.addEventListener('click', (event) => {
+        if (event.target.tagName !== 'BUTTON') {
+            return;
+        }
+
+        fn();
+    });
+};
 
 /*
  Задание 6:
@@ -65,8 +80,14 @@ function delegate(target, fn) {
  Пример:
    once(document.querySelector('button'), () => console.log('обработчик выполнился!')) // добавит такой обработчик кликов для указанного элемента, который вызовется только один раз и затем удалится
  */
-function once(target, fn) {
-}
+var once = (target, fn) => {
+    var onClick = () => {
+        target.removeEventListener('click', onClick);
+        fn();
+    };
+
+    target.addEventListener('click', onClick);
+};
 
 export {
     addListener,
