@@ -10,8 +10,13 @@
  Пример:
    createDivWithText('loftschool') // создаст элемент div, поместит в него 'loftschool' и вернет созданный элемент
  */
-function createDivWithText(text) {
-}
+var createDivWithText = (text) => {
+    var div = document.createElement('div');
+
+    div.innerText = text;
+    
+    return div;
+};
 
 /*
  Задание 2:
@@ -21,8 +26,9 @@ function createDivWithText(text) {
  Пример:
    prepend(document.querySelector('#one'), document.querySelector('#two')) // добавит элемент переданный первым аргументом в начало элемента переданного вторым аргументом
  */
-function prepend(what, where) {
-}
+var prepend = (what, where) => {
+    where.prepend(what);
+};
 
 /*
  Задание 3:
@@ -43,8 +49,9 @@ function prepend(what, where) {
 
    findAllPSiblings(document.body) // функция должна вернуть массив с элементами div и span т.к. следующим соседом этих элементов является элемент с тегом P
  */
-function findAllPSiblings(where) {
-}
+var findAllPSiblings = (where) => (
+    [...where.children].filter(({ nextElementSibling }) => (nextElementSibling && nextElementSibling.tagName === 'P'))
+);
 
 /*
  Задание 4:
@@ -63,15 +70,15 @@ function findAllPSiblings(where) {
 
    findError(document.body) // функция должна вернуть массив с элементами 'привет' и 'loftschool'
  */
-function findError(where) {
+var findError = (where) => {
     var result = [];
 
-    for (var child of where.childNodes) {
+    for (var child of where.children) {
         result.push(child.innerText);
     }
 
     return result;
-}
+};
 
 /*
  Задание 5:
@@ -85,8 +92,13 @@ function findError(where) {
    После выполнения функции, дерево <div></div>привет<p></p>loftchool!!!
    должно быть преобразовано в <div></div><p></p>
  */
-function deleteTextNodes(where) {
-}
+var deleteTextNodes = (where) => {
+    for (var node of where.childNodes) {
+        if (node.nodeType === 3) {
+            where.removeChild(node);
+        }
+    }
+};
 
 /*
  Задание 6:
@@ -99,8 +111,15 @@ function deleteTextNodes(where) {
    После выполнения функции, дерево <span> <div> <b>привет</b> </div> <p>loftchool</p> !!!</span>
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
-function deleteTextNodesRecursive(where) {
-}
+var deleteTextNodesRecursive = (where) => {
+    [...where.childNodes].forEach(node => {
+        if (node.nodeType === 3) {
+            where.removeChild(node);
+        } else if (node.hasChildNodes()) {
+            deleteTextNodesRecursive(node);
+        }
+    });
+};
 
 /*
  Задание 7 *:
