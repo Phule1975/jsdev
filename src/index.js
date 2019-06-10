@@ -9,7 +9,7 @@
    addListener('click', document.querySelector('a'), () => console.log('...')) // должна добавить указанный обработчик кликов на указанный элемент
  */
 var addListener = (eventName, target, fn) => {
-	target.addListener(eventName, fn);
+	target.addEventListener(eventName, fn);
 };
 
 /*
@@ -21,7 +21,7 @@ var addListener = (eventName, target, fn) => {
    removeListener('click', document.querySelector('a'), someHandler) // должна удалить указанный обработчик кликов на указанный элемент
  */
 var removeListener = (eventName, target, fn) => {
-	target.removeListener(eventName, fn);
+	target.removeEventListener(eventName, fn);
 };
 
 /*
@@ -33,7 +33,7 @@ var removeListener = (eventName, target, fn) => {
    skipDefault('click', document.querySelector('a')) // после вызова функции, клики на указанную ссылку не должны приводить к переходу на другую страницу
  */
 var skipDefault = (eventName, target) => {
-	target.addListener(eventName, function(event){
+	target.addEventListener(eventName, function(event){
         event.preventDefault();
     });
 };
