@@ -43,10 +43,104 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-filterNameInput.addEventListener('keyup', function() {
-    // здесь можно обработать нажатия на клавиши внутри текстового поля для фильтрации cookie
+filterNameInput.addEventListener('keyup', () => {
+    renderCookieTable();
 });
 
 addButton.addEventListener('click', () => {
-    // здесь можно обработать нажатие на кнопку "добавить cookie"
+    const name = addNameInput.value;
+    const value = addValueInput.value;
+
+    if (!name.trim() || !value.trim()) {
+        return;
+    }
+
+    setCookie(name, value);
+    renderCookieTable();
 });
+
+const getFilteredCookies = (filterValue, cookie) => {
+    if (!cookie) {
+        return [];
+    }
+
+    const cookies = getCookiesObject(cookie);
+    const filteredCookieNames = Object.keys(cookies).filter(cookieName => (
+        cookies[cookieName].includes(filterValue) || cookieName.includes(filterValue)
+    ));
+
+    return filteredCookieNames.reduce((acc, currentName) => {
+        acc[currentName] = cookie[currentName];
+    
+        return acc;
+    }, {});
+};
+
+const getCookiesObject = (cookie) => {
+    return cookie.split('; ').reduce((acc, current) => {
+        const [name, value] = current.split('=');
+
+        acc[name] = value;
+
+        return acc;
+    }, {});
+};
+
+const generateCookieRowDom = (name, value) => {
+    const tableRow = document.createElement('tr');
+    const tableCellName = document.createElement('td');
+    const tableCellValue = document.createElement('td');
+    const tableCellDelete = document.createElement('td');
+    const buttonDelete = document.createElement('button');
+
+    tableCellName.textContent = name;
+    tableCellValue.textContent = value;
+    buttonDelete.textContent = 'Удалить';
+
+    tableCellDelete.append(buttonDelete);
+    tableRow.append(tableCellName);
+    tableRow.append(tableCellValue);
+    tableRow.append(tableCellDelete);
+
+    const onButtonDeleteClick = () => {
+        removeCookie(name);
+        tableRow.remove();
+    };
+
+    buttonDelete.addEventListener('click', onButtonDeleteClick);
+
+    return tableRow;
+};
+
+const renderCookieTable = () => {
+    listTable.innerText = '';
+
+    const cookies = getCookiesObject(document.cookie);
+    const filteredCookies = getFilteredCookies(filterNameInput.value, document.cookie);
+    const fragment = document.createDocumentFragment();
+
+    for (let cookieName of Object.keys(filteredCookies)) {
+        const cookieRow = generateCookieRowDom(cookieName, cookies[cookieName]);
+
+        fragment.append(cookieRow);
+    }
+
+    listTable.append(fragment);
+};
+
+const setCookie = (name, value, expires) => {
+    document.cookie = `${name}=${value}; expires=${expires}`;
+};
+
+const removeCookie = (name) => {
+    const date = new Date();
+
+    date.setDate(date.getDate() - 1);
+    setCookie(name, '', date.toUTCString());
+};
+
+const init = () => {
+    renderCookieTable();
+};
+
+init();
