@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>{{htmlWebpackPlugin.options.title}}</title>
+    <meta charset="UTF-8">
+    <title>{{htmlWebpackPlugin.options.title}}</title>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=0082e970-37b9-4359-aa70-ac7545a33081&lang=ru_RU" type="text/javascript"></script>
+    <style>
+        html, body, #map {
+            width: 100%; height: 100%; padding: 0; margin: 0;
+        }
+    </style>
 </head>
 <body>
+    <div id="map"></div>
 </body>
 </html>
